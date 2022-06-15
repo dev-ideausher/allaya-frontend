@@ -1,0 +1,31 @@
+.search{
+background: #FFFFFF !important;
+border: 0.5px solid #AAAAAA !important;
+border-radius: 8px !important;
+width:  450px !important;
+height: 45px !important;
+/* margin-left: 50px !important; */
+}
+.addNew{
+background: #F89E53 !important;
+border-radius: 5px !important;
+width:  160px !important;
+height: 44px !important;
+border-color: #F89E53 !important;
+font-family: 'Nunito'!important;
+font-style: normal !important;
+font-weight: 600 !important;
+font-size: 14px !important;
+line-height: 140% !important;
+color: #FFFFFF !important;
+/* margin-right: 30px !important; */
+
+}
+.space{
+    display: flex !important;
+    justify-content: start !important; 
+
+}
+.remove{
+    display: none
+}

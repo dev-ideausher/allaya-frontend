@@ -1,0 +1,130 @@
+.track-details{
+    width: 330px;
+height: 180px;
+/* background-color: blue; */
+filter: drop-shadow(0px 4px 12px rgba(90, 41, 5, 0.12));
+border-radius: 16px;
+}
+.track-info{
+    margin-left:20px;
+}
+/* .flex{
+    display: flex;
+    flex-direction: row;
+
+} */
+.name{
+  
+width: 398px;
+height: 33px;
+/* Nunito/24/Bold */
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 50px;
+/* identical to box height */
+
+text-transform: capitalize;
+
+/* grey 6 */
+
+color: #272C31;
+}
+.update{
+    width: 398px;
+height: 24px;
+
+
+/* Nunito/17/Regular */
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 17px;
+line-height: 40%;
+/* identical to box height, or 24px */
+
+
+/* Color / Greyscale / 4 */
+
+color: #AAAAAA;
+}
+.music-details{
+width: 398px;
+height: 48px;
+/* Nunito/17/Regular */
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 17px;
+line-height: 90%;
+/* or 24px */
+
+
+/* dark blue grey */
+
+color: #464749;
+}
+.edit{
+    /* Primary 1 */
+
+background:  #F89E53 !important;
+border-radius: 12px !important;
+font-family: 'Nunito' !important;
+font-style: normal !important ;
+font-weight: 600 !important;
+font-size: 17px !important;
+line-height: 140% !important;
+
+
+/* White */
+
+color: #FFFFFF !important;
+}
+.delete{
+border: 1px solid #7B7B7B  !important;
+border-radius: 12px  !important;
+font-family: 'Nunito' !important;
+font-style: normal !important;
+font-weight: 600 !important;
+font-size: 17px !important;
+line-height: 140% !important;
+color: #7B7B7B !important;
+}
+
+.search{
+    background: #FFFFFF !important;
+    border: 0.5px solid #AAAAAA !important;
+    border-radius: 8px !important;
+    width:  450px !important;
+    height: 45px !important;
+    /* margin-left: 50px !important; */
+    }
+    .addNew{
+    background: #F89E53 !important;
+    border-radius: 5px !important;
+    width:  160px !important;
+    height: 44px !important;
+    border-color: #F89E53 !important;
+    font-family: 'Nunito'!important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    line-height: 140% !important;
+    color: #FFFFFF !important;
+    /* margin-right: 30px   !important; */
+    
+    }
+    .space{
+        display: flex !important;
+        justify-content: space-evenly !important; 
+        /* width: 1550px !important; */
+
+    
+    }
+    .remove{
+        display: none
+    }

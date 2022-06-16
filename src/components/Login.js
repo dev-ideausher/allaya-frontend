@@ -8,7 +8,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 
 const App = () => {
   let navigate = useNavigate();
-
   
   const onFinish = (values) => {
     navigate('/dashboard');

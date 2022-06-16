@@ -1,11 +1,17 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import './login.css';
+import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Checkbox } from 'antd';
 
 
+
 const App = () => {
+  let navigate = useNavigate();
+
+  
   const onFinish = (values) => {
+    navigate('/dashboard');
     console.log('Received values of form: ', values);
   };
 

@@ -1,18 +1,46 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import 'antd/dist/antd.css';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext"
 import { Form, Input, Button, Checkbox } from 'antd';
 
 
 
 const App = () => {
-  let navigate = useNavigate();
   
-  const onFinish = (values) => {
-    navigate('/dashboard');
+  let navigate = useNavigate();
+  const { signup , login} = useAuth()
+  const [token , setToken]=useState('')
+
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  
+  const onFinish = async (values) => {
+    // e.preventDefault()
+    try {
+      setError("")
+
+      setLoading(true)
+      let response =  await login(values.username, values.password);
+      console.log(response.user.multiFactor.user.accessToken , 'response');
+      // setToken(response.user.multiFactor.user.accessToken)
+      localStorage.setItem('authToken' , response.user.multiFactor.user.accessToken);
+      navigate('/dashboard');
+    } catch {
+      setError("Failed to create an account")
+    }
+    // if( token != ''){
+    //   localStorage.setItem('authToken' , token);
+    // }
+    setLoading(false)
     console.log('Received values of form: ', values);
   };
+   console.log(token, 'tocken')
+  
+  
+
+
 
   return (
     <div style={{background: '#FFE4CC' , position: 'absolute', width: '1920px', height: '1080px',left: '0px',top: '0px'}}>

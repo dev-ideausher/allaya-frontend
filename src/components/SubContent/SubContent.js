@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import './sub.css'
 import { Button } from 'antd'
 
-export default function SubContent({data , getSubDeepDive , getTrackNameData }) {
+export default function SubContent({data , getSubDeepDive , getTrackNameData , getSubCategories}) {
     const[ subCategory , setSubCategory]= useState(false);
     let navigate = useNavigate();
-    localStorage.setItem( 'Category' , data.categoryId)
-    console.log(data.categoryId, 'iddddddddddd')
-  
+    console.log(data.id , 'subcategory')
 
 const handleSubCategory=(data)=>{
   // console.log(data , 'valueee')
   getSubDeepDive(true);
-  getTrackNameData(data)
+  getTrackNameData(data);
+  getSubCategories(data.id);
+  
     // navigate('/track')
     // getSubCategoryData(data.subCategories);
 }

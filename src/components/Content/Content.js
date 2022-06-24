@@ -4,14 +4,20 @@ import { Button , Input , message , Upload , Modal } from 'antd'
 import { UploadOutlined } from '@ant-design/icons';
 
 
-export default function Content({data , getSubCategory, getSubCategoryData ,handleJson}) {
+export default function Content({data , getSubCategory, getSubCategoryData ,handleJson , handleCategoryId , handleEditData}) {
     const[ subCategory , setSubCategory]= useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    console.log(handleJson , 'dataaaaaa')
+    const [ subName , setSubName] = useState('');
+    const [ subDes , setSubDes] = useState('');
+    
+    localStorage.setItem( 'Category' , data.id);
+
+  
 
 const handleSubCategory=()=>{
     getSubCategory(true);
     getSubCategoryData(data.subCategories);
+    handleCategoryId(data.id);
 }
 
 // useEffect(()=>{
@@ -37,12 +43,14 @@ const handleSubCategory=()=>{
     async function fetchData() {
       const response = await fetch('http://13.57.185.250:8000/api/category');
       const json = await response.json();
-     
+      handleJson(json.categories)
      setSubCategory(json.categories);
     }
     fetchData();
+    
+
   })
-  // handleJson(subCategory);
+  // ;
  }
 
  const showModal = () => {
@@ -99,8 +107,21 @@ const handleClick = () =>{
     }
 }).then((response)=>{
  
+  async function fetchData() {
+    const response = await fetch('http://13.57.185.250:8000/api/category');
+    const json = await response.json();
+    handleJson(json.categories)
+   
+  }
   fetchData();
 })
+}
+const handleSubName=()=>{
+
+}
+
+const handleDesName=()=>{
+  
 }
 
   return (
@@ -125,9 +146,9 @@ const handleClick = () =>{
     <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
     <h3>Add Sub Category</h3>
     <p>Name</p>
-    <Input className='search' placeholder="Search"   />
+    <Input className='search' placeholder="name" name='subName'  value={subName}  onChange={handleSubName}/>
     <p>About</p>
-    <Input className='search' placeholder="Search"   />
+    <Input className='search' placeholder="Search" name='subDes' value={subDes}  onChange={handleDesName} />
     <div>
     <div>
       <Upload {...props} >

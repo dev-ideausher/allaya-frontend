@@ -7,7 +7,8 @@ import Content from '../Content/Content';
 import SubContent from '../SubContent/SubContent';
 import SubDeepDive from '../SubDeepDive/SubDeepDive';
 import { UploadOutlined } from '@ant-design/icons';
-import Dummy from '../Dummy';
+import Img from '../../assets/logo.png';
+
 
 export default function () {
   const[categories , setCategories]=useState([]);
@@ -23,19 +24,31 @@ export default function () {
   const [isModalVisibleSub, setIsModalVisibleSub] = useState(false);
   const [addNewTitleCategory , setAddNewTitleCategory]= useState('');
   const [addNewDesCategory , setAddNewDesCategory]= useState('');
+  const [ content , setContent] = useState(false);
+  const [ dashboard , setDashboard] = useState(false);
+  const [ app , setApp] = useState(false);
+  const [ notification , setNotification] = useState(false); 
+  const [ nameSubContent , setNameSubContent] = useState('')
+  const [ desSubContent , setDesSubContent] = useState('')
+  const [categoryId , setategoryId] = useState('')
+  const [subCategoryId , setSubCategoryId] = useState('');
 
 
  
-
  async function fetchData() {
   const response = await fetch('http://13.57.185.250:8000/api/category');
   const json = await response.json();
- 
+  console.log('fetch datat trigger' );
   setCategories(json.categories);
+  console.log('fetch datat trigger'  , categories);
 }
 
+
+
 useEffect(() => {
+
   fetchData();
+  
 }, []);
 
 const getSubCategory=(data)=>{
@@ -49,13 +62,12 @@ const getSubDeepDive=(data)=>{
 }
 
 const getSubCategoryData=(data)=>{
-  console.log(data, 'check data cominnng track');
   setSubCategory(data);
 
 }
 
 const getTrackNameData=(data)=>{
-  console.log(data, 'check data cominnng track');
+  
   setTracKData(data);
 }
 
@@ -92,10 +104,22 @@ const handleCancelSub = () => {
 };
 
 const handleJsonCategory = (dataComing) =>{
-  console.log(dataComing,'vvvvvvvvvv')
-  alert('rrrrrrrr')
+ 
   setCategories(dataComing);
 }
+
+const handleNameSubContent=(e)=>{
+  setNameSubContent(e.target.value);
+}
+
+const handleDesSubContent =(e)=>{
+ setDesSubContent(e.target.value);
+}
+
+const handleEditData = (dataComing) =>{
+  setCategories(dataComing)
+}
+
 
 useEffect(() => {
   if(searchValue.length !== ' '){
@@ -115,7 +139,6 @@ useEffect(() => {
       return item.name.toLowerCase().includes(searchValueSub.toLowerCase())
       
     });
-    console.log(newContactList , 'checking catogries');
     setSearchResultSub(newContactList);
     
    }else{
@@ -171,21 +194,18 @@ useEffect(() => {
     if(response){
       fetchData();
       setAddNewDesCategory('');
-  setAddNewTitleCategory('');
-  setIsModalVisible(false);
+      setAddNewTitleCategory('');
+      setIsModalVisible(false);
     }
   })
   
   
   }
 
- 
-  
-  console.log(localStorage.getItem('Category'), 'locallllll')
+
 
   const handleSubApi = () =>{
-    console.log(localStorage.getItem('Category'), 'categotyyy cgeckinh')
-
+    
     fetch("http://13.57.185.250:8000/api/sub-category", {
      
       // Adding method type
@@ -193,9 +213,9 @@ useEffect(() => {
        
       // Adding body or contents to send
       body: JSON.stringify({
-        categoryId: localStorage.getItem('Category'),
-        name:"You can",
-        desc:"Basic mindfulness meditation is the practice of paying attention to the present moment with an accepting, nonjudgmental disposition",
+        categoryId: `${categoryId.length > 0 ? categoryId : null }`,
+        name: nameSubContent,
+        desc: desSubContent,
         coverImage: "https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/attachment_75094405.jpg"
       }),
        
@@ -207,6 +227,7 @@ useEffect(() => {
   }).then((response)=>{
     if(response){
       fetchData();
+      // window.location.reload()
     }
   })
 
@@ -219,16 +240,52 @@ useEffect(() => {
   const handleAddDesCategory=(e)=>{
     setAddNewDesCategory(e.target.value);
   }
+  const handleContent = () =>{
+      setContent(true);
+      setApp(false)
+      setNotification(false)
+      setDashboard(false)
+  }
+
+  const handleApp = () =>{
+    setContent(false);
+    setApp(true)
+    setDashboard(false)
+    setNotification(false)
+} 
+
+const handleNotify = () =>{
+  setContent(false);
+  setApp(false)
+  setNotification(false)
+  setNotification(true)
+}
+
+const handleDashboard = () =>{
+  setContent(false);
+  setApp(false)
+  setDashboard(true)
+  setNotification(false)
+}
+
+const handleCategoryId = (id) =>{
+  setategoryId(id);
+}
+
+const handleSubCategory =(id)=>{
+  setSubCategoryId(id);
+}
+
  
   return (
     <div style={{background: '#FDF2E6' , display : 'flex' , flexDirection:'row' , justifyContent:'space-between'}}>
-      <div style={{ background: '#FDF2E6' , height: '1080px' , flex: 1}}>
+      <div style={{ background: '#FDF2E6' , height: '500px' , flex: 1}}>
       <div style={{display:'flex' , flexDirection: 'column' }}>
-        <p style={{ marginRight:'15px',background: '#F89E53', borderRadius: '0px 8px 8px 0px', width: '200px', height: '20px' , display: 'flex' ,flexDirection: 'row', padding: '16px 20px 17px 44px'
-       , alignItems:'center' , gap: '4px'}}>Dashboard</p>
-        <p>App Users</p>
-        <p>Content</p>
-        <p>Notifications</p>
+      <img src = {Img} alt='logo' height={50} width={150} style={{marginTop:'30px', marginBottom:'30px' , marginLeft:'20px'}}/>
+        <div tabIndex={1} className={ dashboard ? 'orange-header': 'white-header'} onClick={handleDashboard} role='button'>Dashboard</div>
+        <div tabIndex={1} className={ app ? 'orange-header': 'white-header'} onClick={handleApp} role='button'>App Users</div>
+        <div tabIndex={1} className={ content ? 'orange-header': 'white-header'} onClick={handleContent} role='button'>Content</div>
+        <div tabIndex={1} className={ notification ? 'orange-header': 'white-header'} onClick={handleNotify} role='button'>Notifications</div>
       </div>
       </div>
       <div style={{ background: 'white' , height: '1080px' , flex:6}}>
@@ -244,9 +301,9 @@ useEffect(() => {
           <Modal  visible={isModalVisibleSub} onOk={handleOkSub} onCancel={handleCancelSub} footer={null}>
           <h3>Add Sub Category</h3>
           <p>Name</p>
-          <Input className='search' placeholder="Search" name='title'  />
+          <Input className='search' placeholder="Search" name='nameSubContent' value={nameSubContent} onChange={handleNameSubContent} />
           <p>About</p>
-          <Input className='search' placeholder="Search" name='artist'  />
+          <Input className='search' placeholder="Search" name='nameSubContent'value={desSubContent} onChange={handleDesSubContent} />
           <div>
           <div>
             <Upload {...props} >
@@ -265,19 +322,22 @@ useEffect(() => {
         <Button className='addNew'  type='primary'  onClick={showModal} >Add New</Button>
         <div>
            <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
-           <h3>Add New Category</h3>
-           <p>Name</p>
-           <Input className='search' placeholder="Search" name='addNewTitleCategory' onChange={handleAddTitleCategory} value={addNewTitleCategory}  />
-           <p>About</p>
-           <Input className='search' placeholder="Search" name='addNewDesCategory' value={addNewDesCategory} onChange={handleAddDesCategory}/>
+           <p className='bold-style'>Add New Category</p>
+           <p className='name'>Name</p>
+           <Input className='search search-two' placeholder="Search" name='addNewTitleCategory' onChange={handleAddTitleCategory} value={addNewTitleCategory}  />
+           <p className='name'>About</p>
+           <Input className='search search-two' placeholder="Search" name='addNewDesCategory' value={addNewDesCategory} onChange={handleAddDesCategory} />
            <div>
            <div>
              <Upload {...props} >
-             <Button icon={<UploadOutlined />} style={{height:'100px', width:'250px'}}>Upload png only</Button>
+             <Button icon={<UploadOutlined />} style={{ marginTop:'10px', marginLeft : '50px',height:'130px', width:'320px' , border: '1px dashed #AAAAAA',borderRadius: '6px'}}>Upload png only</Button>
              </Upload>
            </div>
-             <Button>Cancal</Button>
-             <Button onClick={handleApi} >Create</Button>
+           <div style={{marginLeft:'300px' , marginTop:'10px' , display:'flex' , justifyContent:'space-around'}}>
+           <Button className='button-white' onClick={handleCancel}>Cancal</Button>
+             <Button className='button-orange' onClick={handleApi} >Create</Button>
+           </div>
+             
            </div>
          </Modal>
         </div>
@@ -287,26 +347,26 @@ useEffect(() => {
        <div style={{display:'flex' , flexDirection:'row' , justifyContent:'flex-start' ,flexWrap:'wrap'}}>
        
        {
-        checkSubdeep ?   <SubDeepDive  trackData={trackData} />
+        checkSubdeep ?   <SubDeepDive  trackData={trackData} categoryId={categoryId} subCategoryId={subCategoryId}/>
         : checkSub ? searchValueSub.length < 1 ? (subCategory.map((item)=>{
           return(
-            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData} />
+            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData}  getSubCategories={handleSubCategory}/>
           )
           
         })) :(searchResultSub.map((item)=>{
           return(
-            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData}  />
+            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData} getSubCategories={handleSubCategory} />
           )
           
         })) :  searchValue.length < 1 ? categories.map((item)=>{
           return(
-            <Content  data={item} getSubCategory={getSubCategory} getSubCategoryData={getSubCategoryData} />
+            <Content  data={item} getSubCategory={getSubCategory} getSubCategoryData={getSubCategoryData} handleJson={handleJsonCategory} handleEditData={handleEditData} handleCategoryId={handleCategoryId} />
           )
           
         }) : searchResult.map((item)=>{
           return(
             
-             <Content  data={item} getSubCategory={getSubCategory} getSubCategoryData={getSubCategoryData}  handleJson={handleJsonCategory}/>
+             <Content  data={item} getSubCategory={getSubCategory} getSubCategoryData={getSubCategoryData}  handleJson={handleJsonCategory} handleEditData={handleEditData} handleCategoryId={handleCategoryId}/>
           )
           
         })

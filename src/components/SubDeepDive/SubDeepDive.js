@@ -5,7 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import "antd/dist/antd.css";
 import Table from '../Table/Table'
 
-function SubDeepDive({trackData}) {
+function SubDeepDive({trackData , categoryId ,subCategoryId}) {
     const[tracks , setTracks]=useState([]);
     const[searchResult , setSearchResult]=useState([]);
     const [searchValue , setSearchValue] = useState('');
@@ -15,10 +15,13 @@ function SubDeepDive({trackData}) {
     const [tags , setTags]= useState('');
     const [description , setDescription]= useState('');
 
- async function fetchData() {
-    const response = await fetch('http://13.57.185.250:8000/api/tracks?subCategoryId=62a086f8b2d9256900e55233');
+    async function fetchData() {
+    console.log('fffffff')
+    const response = await fetch(`http://13.57.185.250:8000/api/tracks?subCategoryId=${subCategoryId}`);
     const json = await response.json();
+
     setTracks(json.tracks);
+    
   }
   
   useEffect(() => {
@@ -28,6 +31,7 @@ function SubDeepDive({trackData}) {
 
   const handleSearchChage=(e)=>{
     setSearchValue(e.target.value);
+
   }
 
   useEffect(() => {
@@ -85,7 +89,7 @@ function SubDeepDive({trackData}) {
   };
 
   const handleClick = () =>{
-    console.log('cliked');
+    
      fetch("http://13.57.185.250:8000/api/tracks", {
      
     // Adding method type
@@ -99,7 +103,7 @@ function SubDeepDive({trackData}) {
       desc:description,
       audioTrack:"https://allayya-tracks.s3.us-west-1.amazonaws.com/allayya-track-Mast+Nazron+Se_320%28PagalWorld.com.se%29.mp3",
       thumbnailImage:"https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/attachment_75094405.jpg",
-      subCategoryId:"62a086f8b2d9256900e55233"
+      subCategoryId:subCategoryId
     }),
      
     // Adding headers to the request
@@ -107,11 +111,27 @@ function SubDeepDive({trackData}) {
         "Content-type": 'application/json',
         "FIREBASE_AUTH_TOKEN":localStorage.getItem('authToken')
     }
-}).then(response =>{
+}).then((response) =>{
+  
   fetchData();
+  setIsModalVisible(false);
+  setArtist('');
+  setTags('');
+  setTracks('');
+  setDescription('');
+  setTitle('');
+
 })
   }
-
+  // const tracksRes = [];
+  // useEffect(()=>{
+    
+  //   if(tracks.length > 0){
+  //     tracksRes= tracks;
+  //   }
+  // },[tracks] )
+  
+// console.log(tracks,'tttttttttttt')
  
 
  
@@ -126,8 +146,9 @@ function SubDeepDive({trackData}) {
         <p className='name'>{trackData.name}</p>
         <div className='update'>{trackData.createdAt}</div>
         <p className='music-details'>{trackData.desc}</p>
-        <div>
+        <div style={{margin:'10px' , display:'flex'  , justifyContent:'flex-start'}}>
         <Button className='edit'>Edit</Button>
+        <div style={{margin:'15px'}}></div>
         <Button className='delete'>Delete</Button>
         </div>
         
@@ -135,32 +156,38 @@ function SubDeepDive({trackData}) {
     
     </div>
     <div>
-        <p> Name</p>
+        <p className='sub-name'> Name</p>
         <div className='space' >
             <Input className='search' placeholder="Search" name='searchValue' value={searchValue} onChange={handleSearchChage} />
             <Button className='addNew'  type='primary' onClick={showModal} >Add New</Button>
         </div>
-    <Table tracks={ searchValue.length < 1 ? tracks : searchResult }/>
+        
+         <div className='table'>
+         <Table tracks={ searchValue.length < 1 ? tracks : searchResult }/>
+         </div>
+    
     </div>
     <div>
-      <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-      <h3>Uplaod Tracks</h3>
-      <p>Title</p>
-      <Input className='search' placeholder="Search" name='title' value={title} onChange={handleTittle} />
-      <p>Artist</p>
-      <Input className='search' placeholder="Search" name='artist' value={artist} onChange={handleArtist} />
-      <p>Tags</p>
-      <Input className='search' placeholder="Search" name='tags' value={tags} onChange={handleTags} />
-      <p>Description</p>
-      <Input className='search' placeholder="Search" name='description' value={description} onChange={handleDes}  />
+      <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <p className='bold-style'>Uplaod Tracks</p>
+      <p className='name'>Title</p>
+      <Input className='search search-two' placeholder="Search" name='title' value={title} onChange={handleTittle} />
+      <p className='name'>Artist</p>
+      <Input className='search search-two' placeholder="Search" name='artist' value={artist} onChange={handleArtist} />
+      <p className='name'>Tags</p>
+      <Input className='search search-two' placeholder="Search" name='tags' value={tags} onChange={handleTags} />
+      <p className='name'>Description</p>
+      <Input className='search search-two' placeholder="Search" name='description' value={description} onChange={handleDes}  />
       <div>
       <div>
        <Upload {...props} >
-        <Button icon={<UploadOutlined />} style={{height:'100px', width:'250px'}}>Upload png only</Button>
+        <Button icon={<UploadOutlined />}  style={{ marginTop:'10px', marginLeft : '50px',height:'100px', width:'250px' , border: '1px dashed #AAAAAA',borderRadius: '6px'}}>Upload png only</Button>
        </Upload>
       </div>
-       <Button>Cancal</Button>
-       <Button onClick={handleClick}>Create</Button>
+      <div style={{marginLeft:'300px' , marginTop:'10px' , display:'flex' , justifyContent:'space-around'}}>
+        <Button className='button-white' onClick={handleCancel}>Cancal</Button>
+        <Button className='button-orange' onClick={handleClick}>Create</Button>
+      </div>
       </div>
     </Modal>
      </div>
@@ -170,4 +197,5 @@ function SubDeepDive({trackData}) {
 }
 
 export default SubDeepDive
+
 

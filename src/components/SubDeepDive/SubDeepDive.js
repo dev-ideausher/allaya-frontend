@@ -117,7 +117,6 @@ function SubDeepDive({trackData , categoryId ,subCategoryId}) {
   setIsModalVisible(false);
   setArtist('');
   setTags('');
-  setTracks('');
   setDescription('');
   setTitle('');
 
@@ -131,7 +130,7 @@ function SubDeepDive({trackData , categoryId ,subCategoryId}) {
   //   }
   // },[tracks] )
   
-// console.log(tracks,'tttttttttttt')
+console.log(tracks,'tttttttttttt')
  
 
  

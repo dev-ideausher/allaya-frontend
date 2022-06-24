@@ -83,7 +83,7 @@ const props = {
 async function fetchData() {
   const response = await fetch('http://13.57.185.250:8000/api/category');
   const json = await response.json();
- 
+  setSubCategory([]);
   setSubCategory(json.categories);
 }
 

@@ -46,3 +46,34 @@
     height: 56px;
     border-radius: 5px;
   }
+  .play-button{
+    width: 44px;
+height: 44px;
+
+
+/* Color / Tertiary / 2 */
+
+background: #FBEB9C;
+border-radius: 24px;
+  }
+  .delete-button{
+
+
+/* Color / Greyscale / 2 */
+width: 44px;
+height: 44px;
+
+background: #D4D794;
+border-radius: 24px;
+  }
+  .edit-button{
+    width: 44px;
+height: 44px;
+border-radius: 24px;
+    background: #FAC7C3;
+  }
+  .display{
+    display: none;
+  }
+
+

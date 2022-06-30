@@ -14,12 +14,27 @@
     background: #FBEB9C;
 height: 100px;
 width: 100px;
-left: 16px;
-top: 16px;
+/* left: 16px;
+top: 16px; */
 border-radius: 50%;
-margin-top: 10px;
+/* margin-top: 10px; */
+position: relative;
+display: inline-block;
+overflow: hidden;
+
+margin-right: 30px;
+margin-bottom: 10px;
 
 }
+.circle > img {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-height: 100%;
+    min-width: 100%;
+    transform: translate(-50%, -50%);
+  }
 .med{
     /* Nunito/20/SemiBold */
 
@@ -98,4 +113,86 @@ top: 0px;
     display: flex;
     justify-content: space-evenly;
     margin-top: 20px;
+}
+
+.edit-category{
+
+   
+    width: 46px;
+    height: 24px;
+    /* Nunito/17/SemiBold */
+    
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 140%;
+    /* identical to box height, or 24px */
+    
+    display: flex;
+    align-items: center;
+    
+    /* Color / Greyscale / 2 */
+    
+    color: #4D4D4D;
+}
+.search-edit-category{
+    
+        background: #FFFFFF !important;
+        border: 0.5px solid #AAAAAA !important;
+        border-radius: 8px !important;
+        width:  450px !important;
+        height: 45px !important;
+        margin-right:350px !important;
+        /* margin-left: 50px !important; */
+    
+}
+.button-white{
+    box-sizing: border-box !important;
+
+
+
+/* White */
+
+background: #FFFFFF !important;
+/* Primary 1 */
+
+border: 1px solid #F89E53 !important;
+border-radius: 12px !important;
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 600;
+font-size: 17px;
+line-height: 140%;
+/* identical to box height, or 24px */
+
+
+
+/* Primary 1 */
+
+color: #F89E53;
+}
+.button-orange{
+    box-sizing: border-box !important;
+
+    background: #F89E53 !important;
+    border-radius: 12px !important;
+
+    /* White */
+    
+   
+    /* Primary 1 */
+    
+    border: 1px solid #F89E53 !important;
+    color: white !important;
+    border-radius: 12px !important;
+    font-family: 'Nunito' !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    font-size: 17px !important;
+    line-height: 140% !important;
+
+}
+.pd{
+    margin-top: 10px;
 }

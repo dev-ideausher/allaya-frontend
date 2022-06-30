@@ -75,7 +75,7 @@ function SubDeepDive({trackData , categoryId ,subCategoryId}) {
 
   const props = {
     beforeUpload: (file) => {
-      const isPNG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/jpg';
   
       if (!isPNG) {
         message.error(`${file.name} is not a png file`);
@@ -122,16 +122,15 @@ function SubDeepDive({trackData , categoryId ,subCategoryId}) {
 
 })
   }
-  // const tracksRes = [];
-  // useEffect(()=>{
-    
-  //   if(tracks.length > 0){
-  //     tracksRes= tracks;
-  //   }
-  // },[tracks] )
+  
+  const handleEditTrackData=(dataComing)=>{
+    setTracks(dataComing);
+  }
   
 console.log(tracks,'tttttttttttt')
- 
+ const handleDeleteData = (comingData)=>{
+  setTracks(comingData)
+ }
 
  
   return (
@@ -162,7 +161,7 @@ console.log(tracks,'tttttttttttt')
         </div>
         
          <div className='table'>
-         <Table tracks={ searchValue.length < 1 ? tracks : searchResult }/>
+         <Table tracks={ searchValue.length < 1 ? tracks : searchResult } handleDeleteData={handleDeleteData} handleEditTrackData={handleEditTrackData}/>
          </div>
     
     </div>

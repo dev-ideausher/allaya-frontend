@@ -1,5 +1,6 @@
 import React,{useState , useEffect} from 'react'
 import './dashboard.css'
+import './loading.css'
 import Header from '../Header/Header';
 import { Input ,Button , Space, Modal, Upload,message } from 'antd';
 import {SearchOutlined} from '@ant-design/icons'
@@ -32,24 +33,36 @@ export default function () {
   const [ desSubContent , setDesSubContent] = useState('')
   const [categoryId , setategoryId] = useState('')
   const [subCategoryId , setSubCategoryId] = useState('');
+  const [ fetchSubCategory , setFetchSubCategory]= useState([])
+  const [fileName , setFileName]= useState('')
+  // const [isLoading, setIsLoading] = useState(false);
 
 
  
  async function fetchData() {
   const response = await fetch('http://13.57.185.250:8000/api/category');
   const json = await response.json();
-  console.log('fetch datat trigger' );
+  // console.log('fetch datat trigger' );
   setCategories(json.categories);
-  console.log('fetch datat trigger'  , categories);
+  // console.log('fetch datat trigger'  , json);
 }
 
 
 
-useEffect(() => {
 
+
+useEffect(() => {
   fetchData();
+ 
   
 }, []);
+
+// useEffect(() => {
+//   fetchDataSubCategory();
+  
+// }, [categoryId,checkSub]);
+  
+
 
 const getSubCategory=(data)=>{
  
@@ -62,7 +75,8 @@ const getSubDeepDive=(data)=>{
 }
 
 const getSubCategoryData=(data)=>{
-  setSubCategory(data);
+  console.log(data , 'lllllllllllll')
+   setSubCategory(data);
 
 }
 
@@ -157,22 +171,66 @@ useEffect(() => {
     />
   )
 
-  const props = {
-    beforeUpload: (file) => {
-      const isPNG = file.type === 'image/jpeg';
+  // const props = {
+  //   beforeUpload: (file) => {
+  //     const isPNG = file.type === 'image/jpeg';
   
-      if (!isPNG) {
-        message.error(`${file.name} is not a png file`);
+  //     if (!isPNG) {
+  //       message.error(`${file.name} is not a png file`);
+  //     }
+  
+  //     return isPNG || Upload.LIST_IGNORE;
+  //   },
+  //   onChange: (info) => {
+  //     console.log(info.fileList);
+  //   },
+  // };
+
+  const props = {
+    name: 'file',
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    headers: {
+      authorization: 'authorization-text',
+    },
+  
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+        setFileName(info?.file?.name)
       }
   
-      return isPNG || Upload.LIST_IGNORE;
-    },
-    onChange: (info) => {
-      console.log(info.fileList);
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } 
     },
   };
 
+  useEffect(()=>{
+    fetchUploadFile()
+  },[fileName.length >0])
+
+  const fetchUploadFile =()=>{
+    fetch("http://13.57.185.250:8000/api/file-upload", {
+     
+      // Adding method type
+      method: "POST",
+       
+      // Adding body or contents to send
+      body: JSON.stringify({
+       file: fileName,
+       type: 'category',
+      }),
+       
+      // Adding headers to the request
+      headers: {
+          "Content-type": 'application/json',
+          "FIREBASE_AUTH_TOKEN":localStorage.getItem('authToken')
+      }
+  }).then((response)=> console.log(response , 'response'))
+  }
+
   const handleApi = ()=>{
+    
     fetch("http://13.57.185.250:8000/api/category", {
      
       // Adding method type
@@ -226,7 +284,16 @@ useEffect(() => {
       }
   }).then((response)=>{
     if(response){
-      fetchData();
+      async function fetchDataSubCategory() {
+  
+        const response = await fetch(`http://13.57.185.250:8000/api/category/${categoryId}`);
+        const json = await response.json();
+       
+        getSubCategoryData(json?.category?.subCategories);
+        setIsModalVisibleSub(false);
+      }
+      
+      fetchDataSubCategory();
       // window.location.reload()
     }
   })
@@ -299,19 +366,21 @@ const handleSubCategory =(id)=>{
         <div>
         <div>
           <Modal  visible={isModalVisibleSub} onOk={handleOkSub} onCancel={handleCancelSub} footer={null}>
-          <h3>Add Sub Category</h3>
-          <p>Name</p>
-          <Input className='search' placeholder="Search" name='nameSubContent' value={nameSubContent} onChange={handleNameSubContent} />
-          <p>About</p>
-          <Input className='search' placeholder="Search" name='nameSubContent'value={desSubContent} onChange={handleDesSubContent} />
+          <p className='bold-style'>Add Sub Category</p>
+          <p className='name'>Name</p>
+          <Input className='search search-two' placeholder="Search" name='nameSubContent' value={nameSubContent} onChange={handleNameSubContent} />
+          <p className='name'>About</p>
+          <Input className='search search-two' placeholder="Search" name='nameSubContent'value={desSubContent} onChange={handleDesSubContent} />
           <div>
           <div>
             <Upload {...props} >
-            <Button icon={<UploadOutlined />} style={{height:'100px', width:'250px'}}>Upload png only</Button>
+            <Button icon={<UploadOutlined />} style={{ marginTop:'10px', marginLeft : '50px',height:'130px', width:'320px' , border: '1px dashed #AAAAAA',borderRadius: '6px'}}>Upload png only</Button>
             </Upload>
           </div>
-            <Button>Cancal</Button>
-            <Button onClick={handleSubApi} >Create</Button>
+          <div style={{marginLeft:'300px' , marginTop:'10px' , display:'flex' , justifyContent:'space-around'}}>
+          <Button className='button-white'>Cancal</Button>
+          <Button className='button-orange' onClick={handleSubApi} >Create</Button>
+          </div>
           </div>
         </Modal>
      </div>
@@ -329,13 +398,13 @@ const handleSubCategory =(id)=>{
            <Input className='search search-two' placeholder="Search" name='addNewDesCategory' value={addNewDesCategory} onChange={handleAddDesCategory} />
            <div>
            <div>
-             <Upload {...props} >
+             <Upload {...props}  maxCount={1}>
              <Button icon={<UploadOutlined />} style={{ marginTop:'10px', marginLeft : '50px',height:'130px', width:'320px' , border: '1px dashed #AAAAAA',borderRadius: '6px'}}>Upload png only</Button>
              </Upload>
            </div>
            <div style={{marginLeft:'300px' , marginTop:'10px' , display:'flex' , justifyContent:'space-around'}}>
            <Button className='button-white' onClick={handleCancel}>Cancal</Button>
-             <Button className='button-orange' onClick={handleApi} >Create</Button>
+             <Button className='button-orange' onClick={handleApi}  >Create</Button>
            </div>
              
            </div>
@@ -344,18 +413,18 @@ const handleSubCategory =(id)=>{
        </div>)
        }
      
-       <div style={{display:'flex' , flexDirection:'row' , justifyContent:'flex-start' ,flexWrap:'wrap'}}>
+       <div   style={{display:'flex' , flexDirection:'row' , justifyContent:'flex-start' ,flexWrap:'wrap'}}>
        
        {
         checkSubdeep ?   <SubDeepDive  trackData={trackData} categoryId={categoryId} subCategoryId={subCategoryId}/>
         : checkSub ? searchValueSub.length < 1 ? (subCategory.map((item)=>{
           return(
-            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData}  getSubCategories={handleSubCategory}/>
+            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData}  getSubCategories={handleSubCategory} getSubCategoryData={getSubCategoryData} />
           )
           
         })) :(searchResultSub.map((item)=>{
           return(
-            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData} getSubCategories={handleSubCategory} />
+            <SubContent  data={item} getSubDeepDive={getSubDeepDive} getTrackNameData={getTrackNameData} getSubCategories={handleSubCategory} getSubCategoryData={getSubCategoryData}  />
           )
           
         })) :  searchValue.length < 1 ? categories.map((item)=>{
